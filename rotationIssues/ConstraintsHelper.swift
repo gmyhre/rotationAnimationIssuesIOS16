@@ -15,10 +15,10 @@ class ConstraintsHelper {
         
         view1.translatesAutoresizingMaskIntoConstraints = false
         
-        var c1 = view1.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        var c2 = view1.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        var c3 = view1.widthAnchor.constraint(equalToConstant: 100)
-        var c4 = view1.heightAnchor.constraint(equalTo: view.widthAnchor)
+        let c1 = view1.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        let c2 = view1.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        let c3 = view1.widthAnchor.constraint(equalToConstant: 100)
+        let c4 = view1.heightAnchor.constraint(equalTo: view.widthAnchor)
         let constraints = [c1, c2, c3, c4]
         
         NSLayoutConstraint.activate(constraints)

@@ -10,14 +10,10 @@ import AVFoundation
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var RectangleView: UIView!
     @IBOutlet weak var BottomView: UIView!
-    @IBOutlet weak var HiBtn: UIButton!
     
     
     @IBOutlet weak var bottomViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var rectViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var rectViewWidth: NSLayoutConstraint!
     @IBOutlet weak var bottomViewTrailing: NSLayoutConstraint!
     @IBOutlet weak var bottomViewBottom: NSLayoutConstraint!
     @IBOutlet weak var bottomViewLeading: NSLayoutConstraint!
@@ -44,17 +40,11 @@ class ViewController: UIViewController {
         
         // pop the interface builder constraints in there:
         portraitConstraints.append(bottomViewHeight)
-        
-        // don't change width and height
         portraitConstraints.append(bottomViewTrailing)
         portraitConstraints.append(bottomViewLeading)
         portraitConstraints.append(bottomViewBottom)
 
         self.lastSupportedInterfaceOrientation = self.currentSupportedOrientation
-        
-        
-        
-        
         
     }
 
@@ -62,6 +52,12 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
 
 
+        //#################################################
+        //KEY LINE
+        // UIView.setAnimationsEnabled(false)
+        //  turns off all animations in iOS 15.x and below
+        //  iOS 16.x shows animation
+        
         UIView.setAnimationsEnabled(false)  // works for basic animations, but not roations
         
 
