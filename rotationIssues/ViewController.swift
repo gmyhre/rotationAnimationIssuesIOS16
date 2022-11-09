@@ -56,56 +56,36 @@ class ViewController: UIViewController {
         //KEY LINE
         // UIView.setAnimationsEnabled(false)
         //  turns off all animations in iOS 15.x and below
-        //  iOS 16.x shows animation
+        //  iOS 16.x shows animation on rotations
+        //#################################################
         
+        // set it here for obvious example
         UIView.setAnimationsEnabled(false)  // works for basic animations, but not roations
         
 
     }
     
     
-    
-    
-    
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        NotificationCenter.default.removeObserver(self)
+
     }
 
     
     
     
     
-//// This also doesn't work, but worth keep for discussion.
-//    override public func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-//
-//        print("a breakpoint .  Rotation has already started in Collect too!!!")
-//
-//        UIView.setAnimationsEnabled(false)
-//        super.willTransition(to: newCollection, with: coordinator)
-//        //self.updateToolbarConstraints()
-//    }
+    
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 
-        UIView.setAnimationsEnabled(false)
+        // redundant
+        //UIView.setAnimationsEnabled(false)
 
         super.viewWillTransition(to: size, with: coordinator)
         print("viewWillTransition called")
-        
-        let anOrientation = self.preferredInterfaceOrientationForPresentation
-        //print("something\(anOrientation)")
-        if anOrientation.isLandscape {
-            //print("Landscape")
-            
-        } else if anOrientation.isPortrait {
-            //print("Portrait pre")
-            
-        } else {
-            //print("something else")
-        }
         //print("a breakpoint .  Rotation Animation has already started in iOS 16 but not in iOS 15 and below!!!")
         // Put code to be run BEFORE the rotation here...
 
@@ -113,124 +93,48 @@ class ViewController: UIViewController {
         coordinator.animate(alongsideTransition: nil) { _ in
             // Put code to be run after the rotation,
             // or after frame-size change here...
-            
+
+            // In an ideal scenario if UIView.setAnimationsEnabled(worked) we would go back to
             //UIView.setAnimationsEnabled(true)
-            
-            
+            // after the rotation
             let postOrientation = self.preferredInterfaceOrientationForPresentation
-
-
             if postOrientation.isLandscape {
                 //print("Landscape post")
-                
                 self.applyLandscapeConstraints()
             } else if postOrientation.isPortrait {
                 //print("Portrait  post")
                 self.applyPortraitConstraints()
             } else {
-                //print("something else post")
+                //print("postOrientation::\(postOrientation)")
             }
 
-            //self.rotateInPlace()
-            
-            
-            // this style is not deprecated UIDevice.current.orientation.isLandscape {
-                //print("Landscape post")
-            //UIView.setAnimationsEnabled(true)
-            // shouldn't work because animations are false
             
         }
     }
-    
+
+    //// This also doesn't work, but worth keep for discussion.
+    //    override public func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    //
+    //        print("a breakpoint .  Rotation has already started in Collect too!!!")
+    //
+    //        UIView.setAnimationsEnabled(false)
+    //        super.willTransition(to: newCollection, with: coordinator)
+    //        //self.updateToolbarConstraints()
+    //    }
+
     
     
     func applyLandscapeConstraints() {
         NSLayoutConstraint.deactivate(portraitConstraints)
         print("go landscape")
         landscapeConstraints = ConstraintsHelper.applyLandscapeConstraints(view: self.view, view1: BottomView)
-        
     }
         
     func applyPortraitConstraints() {
         print("go portrait")
         NSLayoutConstraint.deactivate(landscapeConstraints)
-        
         view.addConstraints(portraitConstraints)
     }
-    
-
-    
-    
-    @objc func orientationChanged(notification: NSNotification) {
-        print("not using this one")
-            //let deviceOrientation = UIApplication.share.statusBarOrientation
-
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, windowScene.activationState == .foregroundActive, let window = windowScene.windows.first else { return }
-
-        let deviceOrientation = windowScene.interfaceOrientation
-    
-        switch deviceOrientation {
-        case .portrait:
-            fallthrough
-        case .portraitUpsideDown:
-            print("Portrait")
-            self.applyPortraitConstraints()
-            
-        case .landscapeLeft:
-            fallthrough
-        case .landscapeRight:
-            print("landscape")
-            self.applyLandscapeConstraints()
-        case .unknown:
-            print("unknown orientation")
-        @unknown default:
-            print("unknown case in orientation change")
-                
-        }
-    }
-
-    
-    
-    
-    //Class methods
-    static func angleToRotate(fromOrientation : UIInterfaceOrientation, toOrientation : UIInterfaceOrientation) -> CGFloat {
-        
-        guard fromOrientation != toOrientation else {
-            return 0
-        }
-        var rotationAngle : CGFloat = 0
-        
-        if toOrientation == .landscapeRight {
-            if(fromOrientation == .landscapeLeft) {
-                rotationAngle = -(CGFloat(Double.pi))
-            }
-            else {
-                rotationAngle = -(CGFloat(Double.pi) / 2)
-            }
-        }
-        else if toOrientation == .landscapeLeft {
-            if(fromOrientation == .landscapeRight) {
-                rotationAngle = (CGFloat(Double.pi))
-            }
-            else {
-                rotationAngle = (CGFloat(Double.pi) / 2)
-            }
-        }
-        else if toOrientation == .portrait {
-            if(fromOrientation == .landscapeLeft) {
-                rotationAngle = -(CGFloat(Double.pi) / 2)
-            }
-            else if(fromOrientation == .landscapeRight) {
-                rotationAngle = CGFloat(Double.pi) / 2
-            }
-        }
-        return rotationAngle
-    }
-
-    
-
-
-    
     
 
 }
